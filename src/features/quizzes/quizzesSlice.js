@@ -1,4 +1,4 @@
-// Import functions form Redux Toolkit
+// Import functions from Redux Toolkit
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 // initialState
@@ -18,28 +18,28 @@ export const quizzesSlice = createSlice({
     name: 'quizzes',
     initialState,
     reducers: {
-        // Action to create new Quizzes
+        // Action to add new quiz
         addQuiz: (state, action) => {
-            const { id, topicId, name, cardIds }= action.payload;
+            const { id, topicId, name, cardIds } = action.payload;
             state.quizzes[id] = { id, topicId, name, cardIds };
         },
-        // Action to update Quizzes
-        updateQuizz: (state, action) => {
-            const { id, topicId, name, cardIds } = action.payload
+        // Action to update quiz
+        updateQuiz: (state, action) => {
+            const { id, topicId, name, cardIds } = action.payload;
             if (state.quizzes[id]) {
                 state.quizzes[id] = {
                     ...state.quizzes[id],
                     topicId: topicId ?? state.quizzes[id].topicId,
-                    name: name ?? state.quizzes.name,
-                    cardIds: cardIds ?? state.quizzes.cardIds
+                    name: name ?? state.quizzes[id].name,
+                    cardIds: cardIds ?? state.quizzes[id].cardIds
                 };
             }
         },
-        // Action to delete Quizzes
+        // Action to delete quiz
         deleteQuiz: (state, action) => {
             const { id } = action.payload;
-            if (state.topics[id]) {
-                delete state.topics[id];
+            if (state.quizzes[id]) {
+                delete state.quizzes[id];
             }
         }
     }
@@ -51,11 +51,11 @@ export const { addQuiz, updateQuiz, deleteQuiz } = quizzesSlice.actions;
 // Selector to get all quizzes
 export const selectAllQuizzes = (state) => state.quizzes.quizzes;
 
-// Memoized Selector um ein bestimmtes Quiz über die ID zu holen
+// Memoized selector to get a specific quiz by ID
 export const selectQuizById = createSelector(
     [selectAllQuizzes, (state, quizId) => quizId],
     (quizzes, quizId) => quizzes[quizId]
 );
 
-// Exportieren Sie den Reducer
+// Export the reducer
 export default quizzesSlice.reducer;
